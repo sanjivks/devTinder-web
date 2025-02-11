@@ -1,20 +1,28 @@
 import axios from "axios";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addUser } from "./utils/userSlice";
+import { addUser } from "../utils/userSlice";
+import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "../utils/constants";
 
 const Login = () => {
-  const [emailId, setEmaiId] = useState("Ashu@gmail.com");
-  const [password, setPassword] = useState("Ashu@1231");
-  const dispatch=useDispatch();
+  const [emailId, setEmaiId] = useState("Sanjiv@gmail.com");
+  const [password, setPassword] = useState("Sanjiv@1231");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const handleLogin = async () => {
     try {
-      const res = await axios.post("http://localhost:7777/login", {
-        emailId,
-        password,
-      },
-      {withCredentials:true});
-      dispatch(addUser(res.data))
+      const res = await axios.post(
+        BASE_URL + "/login",
+        {
+          emailId,
+          password,
+        },
+        { withCredentials: true }
+      );
+      dispatch(addUser(res.data.user));
+      return navigate("/");
     } catch (err) {
       console.log(err);
     }
@@ -50,7 +58,9 @@ const Login = () => {
             </label>
           </div>
           <div className="card-actions justify-center m-2">
-            <button className="btn btn-primary" onClick={handleLogin}>Login</button>
+            <button className="btn btn-primary" onClick={handleLogin}>
+              Login
+            </button>
           </div>
         </div>
       </div>
