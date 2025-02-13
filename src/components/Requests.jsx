@@ -1,36 +1,30 @@
 import axios from "axios";
+import React, { useEffect } from "react";
 import { BASE_URL } from "../utils/constants";
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addConnections } from "../utils/connectionSlice";
+import { addRequest } from "../utils/requestSlice";
 
-const Connections = () => {
+const Requests = () => {
   const dispatch = useDispatch();
-  const connections = useSelector((store) => store.connections || []);
-  const fetchConnections = async () => {
-    try {
-      const res = await axios.get(BASE_URL + "/user/connections", {
-        withCredentials: true,
-      });
-      dispatch(addConnections(res.data.data));
-    } catch (err) {
-      console.error("Error fetching connections:", err);
-    }
+  const requests = useSelector((store) => store.requests || []);
+  const featchRequest = async () => {
+    const res = await axios.get(BASE_URL + "/user/requests/received", {
+      withCredentials: true,
+    });
+    dispatch(addRequest(res.data.data));
   };
 
-  if (!connections) return;
-
   useEffect(() => {
-    fetchConnections();
+    featchRequest();
   }, []);
 
   return (
     <div className=" text-center my-10">
-      <h1 className="text-bold text-3xl text-white">Connections</h1>
+      <h1 className="text-bold text-3xl text-white">Connections Request</h1>
 
-      {connections.map((connection, index) => {
+      {requests.map((request, index) => {
         const { _id, firstName, lastName, photoUrl, age, gender, about } =
-          connection;
+          request.fromUserId;
 
         return (
           <div
@@ -49,7 +43,7 @@ const Connections = () => {
                 {firstName + " " + lastName}
               </h2>
               {age && gender && <p>{age + " " + gender}</p>}
-              <p>about</p>
+              <p>{about}</p>
             </div>
           </div>
         );
@@ -58,4 +52,4 @@ const Connections = () => {
   );
 };
 
-export default Connections;
+export default Requests;
