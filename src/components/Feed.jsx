@@ -21,11 +21,18 @@ const Feed = () => {
   useEffect(() => {
     getFeed();
   }, []);
-  return feed &&((
-    <div className="flex justify-center my-10">
-      <UserCard user={feed[0]} />
-    </div>
-  ))
+
+  return (
+    feed && (
+      <div className="flex justify-center my-10">
+        {feed && feed.length > 0 ? (
+          <UserCard user={feed[0]} />
+        ) : (
+          <p className="text-xl text-white">No new users found!</p>
+        )}
+      </div>
+    )
+  );
 };
 
 export default Feed;
