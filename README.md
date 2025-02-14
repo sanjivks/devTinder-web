@@ -31,9 +31,9 @@
 - New Page - See all my Conenction REquests
 - Feature - Accept/Reject connection request
 - Send/Ignore the user card from the feed
-
-Remaining:
 - Signup New User
+Remaining:
+
 - E2E testing
 
 

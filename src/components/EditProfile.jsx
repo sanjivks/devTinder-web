@@ -9,27 +9,25 @@ const EditProfile = ({ user }) => {
   const [firstName, setFirstName] = useState(user.firstName);
   const [lastName, setlastName] = useState(user.lastName);
   const [photoUrl, setphotoUrl] = useState(user.photoUrl);
-  const [age, setage] = useState(user.age);
-  const [gender, setgender] = useState(user.gender);
-  const [about, setabout] = useState(user.about);
+  const [age, setage] = useState(user.age || "");
+  const [gender, setgender] = useState(user.gender || "");
+  const [about, setabout] = useState(user.about || "");
   const [error, setError] = useState("");
   const dispatch = useDispatch();
-  const[showToast,setShowToast]=useState(false)
+  const [showToast, setShowToast] = useState(false);
   const savProfile = async () => {
-    setError("")
+    setError("");
     try {
       const res = await axios.patch(
         BASE_URL + "/profile/edit",
         { firstName, lastName, photoUrl, age, gender, about },
         { withCredentials: true }
-      );dispatch(addUser(res?.data?.data))
-      setShowToast(true)
+      );
+      dispatch(addUser(res?.data?.data));
+      setShowToast(true);
       setTimeout(() => {
-        setShowToast(false)
-      }, 2000)
-      
-      
-
+        setShowToast(false);
+      }, 2000);
     } catch (err) {
       setError(err.response?.data || "Something went wrong");
     }
@@ -123,11 +121,13 @@ const EditProfile = ({ user }) => {
           user={{ firstName, lastName, photoUrl, age, gender, about }}
         />
       </div>
-      {showToast&&(<div className="toast toast-top toast-center">
-        <div className="alert alert-success">
-          <span>Profile saved successfully...</span>
+      {showToast && (
+        <div className="toast toast-top toast-center">
+          <div className="alert alert-success">
+            <span>Profile saved successfully...</span>
+          </div>
         </div>
-      </div>)}
+      )}
     </>
   );
 };
